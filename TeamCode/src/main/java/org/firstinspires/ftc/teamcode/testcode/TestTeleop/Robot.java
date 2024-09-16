@@ -1,10 +1,8 @@
-package org.firstinspires.ftc.teamcode.core.hardware;
+package org.firstinspires.ftc.teamcode.testcode.TestTeleop;
 
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-
-import org.firstinspires.ftc.teamcode.core.drive.Drivetrain;
 
 import java.util.List;
 

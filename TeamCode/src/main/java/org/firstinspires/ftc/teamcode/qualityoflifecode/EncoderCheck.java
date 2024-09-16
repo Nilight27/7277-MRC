@@ -1,5 +1,5 @@
 
-package org.firstinspires.ftc.teamcode.testcode;
+package org.firstinspires.ftc.teamcode.qualityoflifecode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
