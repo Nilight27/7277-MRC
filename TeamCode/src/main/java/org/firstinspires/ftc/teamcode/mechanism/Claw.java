@@ -10,22 +10,25 @@ public class Claw {
 
     public enum Action{
         OPEN,
-        CLOSE
+        CLOSE,
+        NORMAL
+
     }
 
     public Claw(HardwareMap hardwareMap){
         claw = hardwareMap.get(Servo.class, "claw");
     }
 
-    public void move(Action action){
+    public void move(Action action) {
 
-        if(action == Action.OPEN){
+        if (action == Action.OPEN) {
             claw.setPosition(ClawConstants.open);
         }
-        if(action == Action.CLOSE){
+        if (action == Action.CLOSE) {
             claw.setPosition(ClawConstants.close);
         }
-
+        if (action == Action.NORMAL) {
+            claw.setPosition(ClawConstants.neutral);
+        }
     }
-
 }

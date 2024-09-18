@@ -1,5 +1,4 @@
-
-package org.firstinspires.ftc.teamcode.teleop;
+package org.firstinspires.ftc.teamcode.testcode.TestTeleop;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -8,15 +7,19 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name = "Drive")
-public class Drive extends LinearOpMode {
+import org.firstinspires.ftc.teamcode.mechanism.Claw;
+
+@TeleOp(name = "TestMechanismCode")
+public class TestMechanismCode extends LinearOpMode {
 
     private final ElapsedTime runtime = new ElapsedTime();
     private DcMotor FL = null;
     private DcMotor BL = null;
     private DcMotor FR = null;
     private DcMotor BR = null;
+    public Claw claw;
     double speedLimiter = 1.65;
+
     @Override
     public void runOpMode() {
 
@@ -27,23 +30,16 @@ public class Drive extends LinearOpMode {
         FR = hardwareMap.get(DcMotor.class, "FR");
         BR = hardwareMap.get(DcMotor.class, "BR");
 
-//         For Skunkworks
-//        FL.setDirection(DcMotor.Direction.REVERSE);
-//        BL.setDirection(DcMotor.Direction.REVERSE);
+        // For basic bot
+//        FL.setDirection(DcMotor.Direction.FORWARD);
+//        BL.setDirection(DcMotor.Direction.FORWARD);
 //        FR.setDirection(DcMotor.Direction.FORWARD);
 //        BR.setDirection(DcMotor.Direction.FORWARD);
 
-        // For basic bot
         FL.setDirection(DcMotor.Direction.FORWARD);
         BL.setDirection(DcMotor.Direction.FORWARD);
         FR.setDirection(DcMotor.Direction.REVERSE);
         BR.setDirection(DcMotor.Direction.REVERSE);
-
-//        //darkstar
-//        FL.setDirection(DcMotor.Direction.FORWARD);
-//        BL.setDirection(DcMotor.Direction.FORWARD);
-//        FR.setDirection(DcMotor.Direction.REVERSE);
-//        BR.setDirection(DcMotor.Direction.REVERSE);
 
         FL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         FR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -55,14 +51,12 @@ public class Drive extends LinearOpMode {
         BL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         BR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-
         FL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         BL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         FR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         BR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-
-
+        claw = new Claw(hardwareMap);
 
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
@@ -74,9 +68,13 @@ public class Drive extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
+        if(opModeInInit()){
+            claw.move(Claw.Action.NORMAL);
+        }
+
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-
+            //DriveTrain code here
             if (gamepad1.dpad_down) {
                 speedLimiter = 2;
             } else if (gamepad1.dpad_up) {
@@ -88,15 +86,14 @@ public class Drive extends LinearOpMode {
             double max;
 
             // POV Mode uses left joystick to go forward & strafe, and right joystick to rotate.
-            // Skunkwork v2
-            double axial = gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
-            double lateral = -gamepad1.left_stick_x * 1.1;
-            double yaw = -gamepad1.right_stick_x;
-
-            //darkstar
 //            double axial = gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
 //            double lateral = -gamepad1.left_stick_x * 1.1;
 //            double yaw = -gamepad1.right_stick_x;
+
+            //darkstar
+            double axial = gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
+            double lateral = gamepad1.left_stick_x * 1.1;
+            double yaw = -gamepad1.right_stick_x;
 
             // Combine the joystick requests for each axis-motion to determine each wheel's power.
             // Set up a variable for each drive wheel to save the power level for telemetry.
@@ -129,6 +126,15 @@ public class Drive extends LinearOpMode {
             BL.setPower(leftBackPower);
             BR.setPower(rightBackPower);
 
+            //Claw code here
+            if(gamepad1.right_bumper){
+                claw.move(Claw.Action.OPEN);
+            }
+            if(gamepad1.left_bumper){
+                claw.move(Claw.Action.CLOSE);
+            }
+
+
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
@@ -138,3 +144,4 @@ public class Drive extends LinearOpMode {
         }
     }
 }
+

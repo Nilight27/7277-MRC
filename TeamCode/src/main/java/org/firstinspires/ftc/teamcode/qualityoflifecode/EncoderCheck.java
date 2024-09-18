@@ -1,6 +1,8 @@
 
 package org.firstinspires.ftc.teamcode.qualityoflifecode;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -36,7 +38,7 @@ public class EncoderCheck extends LinearOpMode {
         BR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         waitForStart();
-
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
             testMotor(FL, "Front Left");
             testMotor(FR, "Front Right");
             testMotor(BL, "Back Left");
